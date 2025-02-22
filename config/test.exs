@@ -1,4 +1,6 @@
 import Config
+config :kanban_ash, token_signing_secret: "6ha8c+uG7qxcYm/YmqHsYldOKaFyOssG"
+config :ash, disable_async?: true
 
 # Configure your database
 #

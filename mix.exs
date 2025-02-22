@@ -33,6 +33,11 @@ defmodule KanbanAsh.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
+      {:picosat_elixir, "~> 0.2"},
+      {:ash_authentication, "~> 4.1"},
+      {:ash_authentication_phoenix, "~> 2.0"},
+      {:ash_postgres, "~> 2.0"},
       {:sourceror, "~> 1.7", only: [:dev, :test]},
       {:ash_phoenix, "~> 2.0"},
       {:ash, "~> 3.0"},
@@ -74,17 +79,18 @@ defmodule KanbanAsh.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
+      setup: ["deps.get", "ash.setup", "assets.setup", "assets.build", "run priv/repo/seeds.exs"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      test: ["ash.setup --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind kanban_ash", "esbuild kanban_ash"],
       "assets.deploy": [
         "tailwind kanban_ash --minify",
         "esbuild kanban_ash --minify",
         "phx.digest"
-      ]
+      ],
+      "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]
     ]
   end
 end

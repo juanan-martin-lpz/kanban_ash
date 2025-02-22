@@ -17,7 +17,8 @@ defmodule KanbanAsh.Application do
       # Start a worker by calling: KanbanAsh.Worker.start_link(arg)
       # {KanbanAsh.Worker, arg},
       # Start to serve requests, typically the last entry
-      KanbanAshWeb.Endpoint
+      KanbanAshWeb.Endpoint,
+      {AshAuthentication.Supervisor, [otp_app: :kanban_ash]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

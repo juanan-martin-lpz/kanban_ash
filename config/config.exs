@@ -19,6 +19,9 @@ config :spark,
     remove_parens?: true,
     "Ash.Resource": [
       section_order: [
+        :authentication,
+        :tokens,
+        :postgres,
         :resource,
         :code_interface,
         :actions,
@@ -40,7 +43,8 @@ config :spark,
 
 config :kanban_ash,
   ecto_repos: [KanbanAsh.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  ash_domains: [KanbanAsh.Tasks, KanbanAsh.Panels, KanbanAsh.Projects, KanbanAsh.Accounts]
 
 # Configures the endpoint
 config :kanban_ash, KanbanAshWeb.Endpoint,

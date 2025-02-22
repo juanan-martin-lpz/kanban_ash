@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :kanban_ash, KanbanAsh.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "local",
   hostname: "localhost",
   database: "kanban_ash_dev",
   stacktrace: true,
@@ -63,7 +63,7 @@ config :kanban_ash, KanbanAshWeb.Endpoint,
   ]
 
 # Enable dev routes for dashboard and mailbox
-config :kanban_ash, dev_routes: true
+config :kanban_ash, dev_routes: true, token_signing_secret: "Kw5jEndhwiCB8XdMca5XpLqC1zVYCaXh"
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
