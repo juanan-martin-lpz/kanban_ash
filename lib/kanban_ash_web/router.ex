@@ -5,6 +5,10 @@ defmodule KanbanAshWeb.Router do
 
   import AshAuthentication.Plug.Helpers
 
+  pipeline :graphql do
+    plug AshGraphql.Plug
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -19,6 +23,19 @@ defmodule KanbanAshWeb.Router do
     plug :accepts, ["json"]
     plug :load_from_bearer
     plug :set_actor, :user
+  end
+
+  scope "/gql" do
+    pipe_through [:graphql]
+
+    forward "/playground",
+            Absinthe.Plug.GraphiQL,
+            schema: Module.concat(["KanbanAshWeb.GraphqlSchema"]),
+            interface: :playground
+
+    forward "/",
+            Absinthe.Plug,
+            schema: Module.concat(["KanbanAshWeb.GraphqlSchema"])
   end
 
   scope "/", KanbanAshWeb do
@@ -82,6 +99,16 @@ defmodule KanbanAshWeb.Router do
 
       live_dashboard "/dashboard", metrics: KanbanAshWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+  end
+
+  if Application.compile_env(:kanban_ash, :dev_routes) do
+    import AshAdmin.Router
+
+    scope "/admin" do
+      pipe_through :browser
+
+      ash_admin "/"
     end
   end
 end
